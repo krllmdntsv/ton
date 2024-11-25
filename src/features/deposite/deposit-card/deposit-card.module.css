@@ -1,0 +1,47 @@
+.form {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	padding: 12px;
+	background-color: hsl(var(--white));
+	border-radius: var(--radius);
+	color: hsl(var(--black));
+	gap: 1rem;
+
+	@media screen and (min-width: 768px) {
+		padding: 24px;
+	}
+}
+
+.wrapper {
+	display: block;
+
+	@media screen and (min-width: 768px) {
+		display: flex;
+		flex-direction: row;
+		gap: 2rem;
+	}
+}
+
+.info {
+	@media screen and (min-width: 768px) {
+		display: flex;
+		flex-direction: column;
+		gap: 6px;
+	}
+}
+
+.info__mobile {
+	display: block;
+	@media screen and (min-width: 768px) {
+		display: none;
+	}
+}
+
+.info__desktop {
+	display: none;
+	@media screen and (min-width: 768px) {
+		display: flex;
+		min-width: 324px;
+	}
+}

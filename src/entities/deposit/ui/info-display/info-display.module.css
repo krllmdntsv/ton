@@ -1,0 +1,23 @@
+.wrapper {
+	padding: 16px 8px;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	background: rgba(255, 255, 255, 0.88);
+	border-radius: var(--radius);
+}
+
+.title {
+	color: rgba(0, 0, 0, 0.5);
+	font-weight: 800;
+	font-size: 14px;
+	line-height: 114%;
+	flex: 1 1 auto;
+}
+
+.value {
+	color: #000;
+	font-weight: 500;
+	font-size: 20px;
+	line-height: 110%;
+}

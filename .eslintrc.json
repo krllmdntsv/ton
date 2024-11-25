@@ -1,0 +1,49 @@
+{
+	"extends": [
+		"airbnb",
+		"airbnb-typescript",
+		"next/core-web-vitals",
+		"prettier"
+	],
+	"overrides": [
+		{
+			"files": ["*.ts", "*.tsx"],
+			"parserOptions": {
+				"project": ["./tsconfig.json"]
+			},
+			"rules": {
+				"import/order": [
+					"error",
+					{
+						"newlines-between": "always",
+						"groups": [
+							"builtin",
+							"external",
+							"internal",
+							"parent",
+							"sibling",
+							"index"
+						],
+						"pathGroups": [
+							{
+								"pattern": "@/*",
+								"group": "internal"
+							}
+						],
+						"pathGroupsExcludedImportTypes": ["builtin"],
+						"alphabetize": {
+							"order": "asc",
+							"caseInsensitive": true
+						}
+					}
+				],
+				"import/prefer-default-export": "off",
+				"react/require-default-props": "off",
+				"react/jsx-props-no-spreading": "off",
+				"eslint-plugin-import/prefer-default-export": "off",
+				"eslint-plugin-import/export": "off",
+				"no-plusplus": "off"
+			}
+		}
+	]
+}
