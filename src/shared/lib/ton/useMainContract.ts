@@ -22,11 +22,9 @@ export function useMainContract() {
 
   const mainContract = useAsyncInitialize(async () => {
     if (!client) return;
-    const contract = new OnixeLanthanum(
-      Address.parse("EQBDUxTxWo41aCY1SGZJJlDnu4uKvZtbOjuGF9mtf22M1UBq") // replace with your address from tutorial 2 step 8
-    );
-    return client.open(contract) as OpenedContract<OnixeLanthanum>;
+    return client.open(OnixeLanthanum.fromAddress(Address.parse('EQB1AKpWxapKbGMcAQnYoTGbnYLs51DUse8Q-d5PR1_EQ_EB'))) as OpenedContract<OnixeLanthanum>;
   }, [client]);
+
   //
   // useEffect(() => {
   //   async function getValue() {
@@ -50,6 +48,15 @@ export function useMainContract() {
     contract_address: mainContract?.address.toString(),
     contract_balance: balance,
     ...contractData,
+    isDeployed: async () => {
+      const address = mainContract?.address;
+
+      if(client && address) {
+      const res = await client.isContractDeployed(address);
+
+      console.log('DEPLOYED', res, mainContract.address.toString());
+      }
+    }
     // sendIncrement: async () => {
     //   return mainContract?.sendIncrement(sender, toNano("0.05"), 5);
     // },
