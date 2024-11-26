@@ -1,6 +1,6 @@
 "use client";
 
-import { TonConnectButton } from "@tonconnect/ui-react";
+import {TonConnectButton, useTonAddress, useTonWallet, useTonConnectUI} from "@tonconnect/ui-react";
 import { PanelLeft } from "lucide-react";
 import Link from "next/link";
 
@@ -14,6 +14,7 @@ import {
 
 import { navList } from "./config";
 import styles from "./header.module.css";
+import {useMainContract} from "@/shared/lib/ton/useMainContract";
 
 function NavList() {
 	return (
@@ -46,6 +47,13 @@ function MobileMenu() {
 }
 
 function Header() {
+	const contract = useMainContract()
+	const wallet = useTonWallet();
+
+
+	console.log(wallet, useTonConnectUI(), contract);
+
+
 	return (
 		<header className={`${styles.header}`}>
 			<div className="global-container flex w-full">
@@ -59,6 +67,9 @@ function Header() {
 					<NavList />
 				</nav>
 				<TonConnectButton />
+				<Button onClick={() => contract.isDeployed()}>
+					CLick
+				</Button>
 			</div>
 		</header>
 	);
