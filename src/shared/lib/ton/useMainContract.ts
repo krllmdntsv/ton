@@ -4,13 +4,20 @@ import { useTonClient } from "./useTonClient";
 import { useAsyncInitialize } from "./useAsyncInitialize";
 import { Address, OpenedContract, toNano } from "@ton/core";
 import { useTonConnect } from "./useTonConnect";
+import {useTonWallet} from "@tonconnect/ui-react";
+
+const sleep = (time: number) =>
+  new Promise((resolve) => setTimeout(resolve, time));
 
 export function useMainContract() {
-  const client = useTonClient();
-  const { sender } = useTonConnect();
 
-  const sleep = (time: number) =>
-    new Promise((resolve) => setTimeout(resolve, time));
+  const wallet = useTonWallet();
+  const address = wallet?.account.address;//'EQB1AKpWxapKbGMcAQnYoTGbnYLs51DUse8Q-d5PR1_EQ_EB';
+
+  const client = useTonClient();
+  // const { sender } = useTonConnect();
+
+  console.log('SENDER', client)
 
   const [contractData, setContractData] = useState<null | {
     counter_value: number;
@@ -18,12 +25,12 @@ export function useMainContract() {
     owner_address: Address;
   }>();
 
-  const [balance, setBalance] = useState<null | number>(0);
 
   const mainContract = useAsyncInitialize(async () => {
-    if (!client) return;
-    return client.open(OnixeLanthanum.fromAddress(Address.parse('EQB1AKpWxapKbGMcAQnYoTGbnYLs51DUse8Q-d5PR1_EQ_EB'))) as OpenedContract<OnixeLanthanum>;
-  }, [client]);
+    if (!client || !address) return;
+
+    return client.open(OnixeLanthanum.fromAddress(Address.parse(address)));
+  }, [client, address]);
 
   //
   // useEffect(() => {
@@ -52,9 +59,9 @@ export function useMainContract() {
       const address = mainContract?.address;
 
       if(client && address) {
-      const res = await client.isContractDeployed(address);
+        const res = await client.isContractDeployed(address);
 
-      console.log('DEPLOYED', res, mainContract.address.toString());
+        console.log('DEPLOYED', res, mainContract.address.toString());
       }
     }
     // sendIncrement: async () => {
