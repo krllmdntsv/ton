@@ -97,11 +97,11 @@ export function useMainContract() {
         await waitForDeploy(contractAddress);
       }
     },
-    get: async () =>{
-      if(client && contractAddress) {
-        // const res = await client.runMethod();
+    getOwner: async () =>{
+      if(mainContract) {
+        const res = await mainContract.getOwner();
 
-        // console.log('DEPLOYED', res, mainContract.address.toString());
+        console.log('OWNER', res);
       }
     },
   };

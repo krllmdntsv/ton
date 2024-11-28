@@ -68,6 +68,9 @@ function Header() {
 				<Button onClick={() => contract.send()}>
 					Send
 				</Button>
+				<Button onClick={() => contract.getOwner()}>
+					Owner
+				</Button>
 			</div>
 		</header>
 	);
