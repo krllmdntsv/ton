@@ -1,6 +1,6 @@
 "use client";
 
-import {TonConnectButton, useTonAddress, useTonWallet, useTonConnectUI} from "@tonconnect/ui-react";
+import {TonConnectButton} from "@tonconnect/ui-react";
 import { PanelLeft } from "lucide-react";
 import Link from "next/link";
 
@@ -48,11 +48,6 @@ function MobileMenu() {
 
 function Header() {
 	const contract = useMainContract()
-	const wallet = useTonWallet();
-
-
-	console.log(wallet, useTonConnectUI(), contract);
-
 
 	return (
 		<header className={`${styles.header}`}>
@@ -68,7 +63,10 @@ function Header() {
 				</nav>
 				<TonConnectButton />
 				<Button onClick={() => contract.isDeployed()}>
-					CLick
+					Check deploy
+				</Button>
+				<Button onClick={() => contract.send()}>
+					Send
 				</Button>
 			</div>
 		</header>
