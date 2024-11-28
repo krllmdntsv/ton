@@ -14,7 +14,6 @@ const sleep = (time: number) =>
   new Promise((resolve) => setTimeout(resolve, time));
 
 export function useMainContract() {
-
   const wallet = useTonWallet();
   const walletAddress = useMemo(() => {
     if(!wallet?.account.address) return;
