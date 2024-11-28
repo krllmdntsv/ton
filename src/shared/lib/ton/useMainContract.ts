@@ -1,10 +1,11 @@
 import { OnixeLanthanum } from "./tact_OnixeLanthanum";
 import { useTonClient } from "./useTonClient";
 import { useAsyncInitialize } from "./useAsyncInitialize";
-import { Address, OpenedContract, toNano, beginCell } from "@ton/core";
+import {Address, toNano, beginCell, ContractProvider} from "@ton/core";
 import { useTonConnect } from "./useTonConnect";
 import {useTonWallet} from "@tonconnect/ui-react";
 import {Address as CoreAddress} from "@ton/core/dist/address/Address";
+import {useMemo} from "react";
 
 
 const tonStakersJettonMasterContractAddress = Address.parse("EQC98_qAmNEptUtPc7W6xdHh_ZHrBUFpw5Ft_IzNU20QAJav");
@@ -18,7 +19,11 @@ const sleep = (time: number) =>
 export function useMainContract() {
 
   const wallet = useTonWallet();
-  const walletAddress = wallet?.account.address ? Address.parse(wallet?.account.address) : undefined;//'EQB1AKpWxapKbGMcAQnYoTGbnYLs51DUse8Q-d5PR1_EQ_EB';
+  const walletAddress = useMemo(() => {
+    if(!wallet?.account.address) return;
+
+    return Address.parse(wallet.account.address)
+  }, [wallet]);//'EQB1AKpWxapKbGMcAQnYoTGbnYLs51DUse8Q-d5PR1_EQ_EB';
 
   const client = useTonClient();
   const { sender } = useTonConnect();
@@ -26,32 +31,19 @@ export function useMainContract() {
   const mainContract = useAsyncInitialize(async () => {
     if (!client || !walletAddress) return;
 
-    // return client.open(await OnixeLanthanum.fromInit(42, Address.parse('EQBDD9f7dGVdaa6DXwStO6WC1kXlWiNd2ThBoJ3kLrN8JcH5')));
     return client.open(await OnixeLanthanum.fromInit(0, walletAddress))
   }, [client, walletAddress]);
 
   const contractAddress = mainContract?.address;
-  // console.log('MAIN', contractAddress?.toString(), walletAddress?.toString(), 'UQBDD9f7dGVdaa6DXwStO6WC1kXlWiNd2ThBoJ3kLrN8JZw8')
-
-  // console.log('LOL', contractAddress?.toString(), walletAddress?.toString(), 'EQBDD9f7dGVdaa6DXwStO6WC1kXlWiNd2ThBoJ3kLrN8JcH5');
 
   return {
     contractAddress,
     contractBalance: 0,
     isDeployed: async () => {
-      // const address = mainContract?.address;
-
       if(client && contractAddress) {
         const res = await client.isContractDeployed(contractAddress);
 
         console.log('DEPLOYED', res, contractAddress.toString(), wallet);
-      }
-    },
-    get: async () =>{
-      if(client && contractAddress) {
-        // const res = await client.runMethod();
-
-        // console.log('DEPLOYED', res, mainContract.address.toString());
       }
     },
     send: async () => {
@@ -115,6 +107,13 @@ export function useMainContract() {
 
         await waitForDeploy(contractAddress);
       }
-    }
+    },
+    get: async () =>{
+      if(client && contractAddress) {
+        // const res = await client.runMethod();
+
+        // console.log('DEPLOYED', res, mainContract.address.toString());
+      }
+    },
   };
 }
